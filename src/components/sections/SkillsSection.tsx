@@ -5,7 +5,6 @@ import { Skill } from "@/types";
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 
-// Kita akan buat komponen ini di langkah berikutnya
 import SkillIcon from "../ui/SkillIcon"; 
 
 const SkillsSection = () => {

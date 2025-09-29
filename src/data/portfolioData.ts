@@ -90,3 +90,41 @@ export const skills: Skill[] = [
   {name: 'Windows', category: 'OS'},
   {name : 'Linux', category: 'OS'}
 ];
+
+// DATA SERTIFIKASI (CERTIFICATIONS)
+export const certifications: Certification[] = [
+  {
+    title: 'Cloud Engineer',
+    issuer: 'Bangkit Academy 2024 led by Google, Gojek, Tokopedia, & Traveloka',
+    issuedDate: 'Jun 2024',
+    url: 'https://link-sertifikat.com' 
+  },
+  {
+    title: 'Junior Web Developer',
+    issuer: 'Badan Nasional Sertifikasi Profesi (BNSP)',
+    issuedDate: 'Sep 2023',
+    url: 'https://link-sertifikat.com'
+  },
+  {
+    title: 'JavaScript Algorithms and Data Structures',
+    issuer: 'freeCodeCamp',
+    issuedDate: 'N/A', 
+    url: 'https://link-sertifikat.com'
+  },
+];
+
+// DATA PENGHARGAAN (AWARDS)
+export const awards: Award[] = [
+  {
+    title: '1st Place in the Best Application Category',
+    issuer: 'KEMATIF',
+    issuedDate: 'Des 2023',
+    description: 'Penghargaan untuk kategori aplikasi terbaik (sistem cerdas & embedded) dalam acara TIF Exhibition.'
+  },
+  {
+    title: '1st Place in the NEC 2023 National Essay Competition',
+    issuer: 'UIN Syarif Hidayatullah Jakarta',
+    issuedDate: 'Sep 2023',
+    description: 'Juara 1 kompetisi esai nasional dengan inovasi ide terkait rancang bangun pot cerdas untuk tanaman bawang.'
+  }
+];
