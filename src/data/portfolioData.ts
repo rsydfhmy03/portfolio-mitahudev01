@@ -30,30 +30,32 @@ export const experiences: Experience[] = [
 export const projects: Project[] = [
   {
     title: "MMCT - City Tour App",
-    image: "/images/projects/mmct.jpg",
+    image: "/images/projects/mmct.png",
     description: "Aplikasi city tour yang dikembangkan untuk klien guna mempromosikan pariwisata di Malang.",
-    tags: ["Adonis.js", "Angular.js", "Midtrans", "PostgreSQL"],
+    tags: ["Adonis.js", "Angular.js", "Midtrans", "PostgreSQL", "Redis", "WebSocket"],
+    liveUrl : "https://mmct.mcf.or.id/beranda",
     sourceUrl: "https://github.com/rsydfhmy03" 
   },
   {
     title: "GansDoctor - Deepfake Detector",
-    image: "/images/projects/gansdoctor.jpg",
+    image: "/images/projects/gansdoctor.jpeg",
     description: "Aplikasi mobile untuk mendeteksi manipulasi deepfake pada foto wajah menggunakan model VGG16.",
-    tags: ["VGG16", "Tensorflow", "Keras", "Python", "Mobile"],
+    tags: ["VGG16", "Tensorflow", "OpenCV","Keras", "Cloud Run","FastAPI", "MobileApp", "Deep Learning"],
+    liveUrl : "https://play.google.com/store/apps/details?id=com.mitahudev.gansdoctor&hl=id",
     sourceUrl: "https://github.com/rsydfhmy03" 
   },
   {
     title: "SootheMate - Stress AI Therapy",
-    image: "/images/projects/soothemate.jpg",
+    image: "/images/projects/sootheMate.png",
     description: "Sebuah AI Therapy untuk membantu pengguna memonitor dan mengelola tingkat stres mereka secara efektif.",
-    tags: ["AI", "Machine Learning", "Web App"],
+    tags: ["AI", "Machine Learning", "App Engine","Mobiles App"],
     sourceUrl: "https://github.com/rsydfhmy03" 
   },
   {
     title: "Intelligent Doorbells",
-    image: "/images/projects/doorbell.jpg",
+    image: "/images/projects/bel.jpeg",
     description: "Merancang sistem bel pintu cerdas menggunakan ESP32-CAM yang mampu mendeteksi wajah orang asing.",
-    tags: ["IoT", "ESP32-CAM", "Embedded Systems", "OpenCV"],
+    tags: ["IoT", "ESP32-CAM", "Embedded Systems", "OpenCV", "Machine Learning"],
     sourceUrl: "https://github.com/rsydfhmy03" 
   }
 ];

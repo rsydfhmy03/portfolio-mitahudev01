@@ -32,7 +32,7 @@ const HeroSection = () => {
   };
 
   return (
-    <motion.section // <-- Ubah menjadi motion.section
+    <motion.section 
       id="home"
       className="flex items-center justify-center min-h-screen text-center"
       variants={containerVariants}
