@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-slate-900`}>
         <ParticlesBackground /> 
         <div className="relative z-10"> {/* <-- Bungkus children */}
           {children}
