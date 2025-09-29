@@ -86,5 +86,7 @@ export const skills: Skill[] = [
   { name: 'Git', category: 'Tools' },
   { name: 'Figma', category: 'Tools' },
   { name: 'GCP', category: 'Tools' },
-  { name: 'Docker', category: 'Tools' }
+  { name: 'Docker', category: 'Tools' },
+  {name: 'Windows', category: 'OS'},
+  {name : 'Linux', category: 'OS'}
 ];
