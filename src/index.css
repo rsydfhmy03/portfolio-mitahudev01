@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  /* 1. Warna Kustom JJK */
+  --color-kogane-bg: #0a0a0a;
+  --color-kogane-dark: #121212;
+  --color-cursed-cyan: #00f0ff;
+  --color-cursed-red: #ff003c;
+  --color-glass-black: rgba(10, 10, 10, 0.7);
+
+  /* 2. Font Family */
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* 3. Animasi Glitch & Pulse */
+  --animate-glitch: glitch 1s linear infinite;
+  --animate-pulse-slow: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes glitch {
+    2%, 64% { transform: translate(2px,0) skew(0deg); }
+    4%, 60% { transform: translate(-2px,0) skew(0deg); }
+    62% { transform: translate(0,0) skew(5deg); }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+  }
+}
+
+/* 4. Global Styles & Reset */
+body {
+  background-color: var(--color-kogane-bg);
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cursed-cyan); /* Efek hover cyan */
+}
+
+/* Utility Classes manual jika diperlukan */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
