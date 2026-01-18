@@ -7,7 +7,8 @@ const HeroSection = () => {
   const personalInfo = {
     name: "Fahmy Rosyadi",
     title: "Full-Stack Developer & Cloud Enthusiast",
-    introduction: "Lulusan Cum Laude dengan passion dalam membangun solusi teknis yang efisien dari hulu ke hilir. Berpengalaman dalam pengembangan aplikasi full-stack dan infrastruktur cloud."
+    // introduction: "Lulusan Cum Laude dengan passion dalam membangun solusi teknis yang efisien dari hulu ke hilir. Berpengalaman dalam pengembangan aplikasi full-stack dan infrastruktur cloud."
+    introduction : "Lulusan Terbaik (Distinction) Bangkit 2024 (Cloud Computing). Spesialis arsitektur backend yang scalable dan integrasi sistem."
   };
 
   const containerVariants = {
