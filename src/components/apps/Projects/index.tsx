@@ -144,6 +144,11 @@ const Projects: React.FC = () => {
                    <Github size={14} /> SOURCE CODE
                  </a>
                )}
+               {selectedProject.githubLink2 && (
+                 <a href={selectedProject.githubLink2} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-2 bg-white/10 text-white font-bold text-xs rounded hover:bg-white/20 hover:border-white/50 transition-all border border-white/10">
+                   <Github size={14} /> SOURCE CODE 2
+                 </a>
+               )}
                {selectedProject.isConfidential && (
                  <div className="flex items-center gap-2 px-6 py-2 bg-cursed-red/10 text-cursed-red font-bold text-xs rounded border border-cursed-red/30 cursor-not-allowed opacity-80">
                    <Lock size={14} /> PRIVATE / CONFIDENTIAL

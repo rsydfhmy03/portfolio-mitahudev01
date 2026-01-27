@@ -23,6 +23,7 @@ export interface Project {
   media: ProjectMedia[]; // Gallery support
   demoLink?: string;
   githubLink?: string;
+  githubLink2?: string;
   isConfidential?: boolean; // If true, hides code
 }
 

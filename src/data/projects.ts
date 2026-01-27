@@ -8,7 +8,7 @@ export const PROJECTS_DATA: Project[] = [
     association: 'Politeknik Negeri Jember (Undergraduate Thesis)',
     date: 'Aug 2024 - Jun 2025',
     shortDesc: 'AI-Generated Face Detection System to combat deepfakes.',
-    fullDesc: `This project was an end-to-end development of a system to combat the spread of misinformation by detecting AI-generated facial images (deepfakes) on social media content. I designed, trained, and deployed a deep learning model, then built a full-stack application around it, culminating in a publicly available Android app on the Google Play Store.
+    fullDesc: `This project was an end-to-end development of a system to combat the spread of misinformation by detecting AI-generated facial images (deepfakes) on social media content. I designed, trained, and deployed a deep learning model using app engine, then built a full-stack application around it, culminating in a publicly available Android app on the Google Play Store.
 
 Key Achievements:
 • Model Development: Developed a CNN using VGG-16 for transfer learning, achieving 99.52% accuracy in distinguishing real vs. AI faces.
@@ -16,19 +16,21 @@ Key Achievements:
 • Dataset: Expanded dataset from 2,358 to 8,300 images via augmentation.
 • Backend & DevOps: Engineered scalable RESTful API with Python/FastAPI. Implemented CI/CD via GitHub Actions to GCP Cloud Run.
 • Mobile App: Built a Flutter Android app for real-time analysis.`,
-    techStack: ['Python', 'FastAPI', 'TensorFlow', 'VGG-16', 'Flutter', 'Dart', 'GCP', 'Docker', 'GitHub Actions'],
+    techStack: ['Python', 'FastAPI', 'TensorFlow', 'VGG-16', 'Flutter', 'Dart', 'GCP', 'Cloud Run', 'Cloud Storage', 'Docker', 'GitHub Actions'],
     media: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1633412802994-5c058f151b66?q=80&w=1000&auto=format&fit=crop', caption: 'GansDoctor UI' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop', caption: 'AI Model Architecture' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1661956602116-aa6865609028?q=80&w=1000&auto=format&fit=crop', caption: 'GCP Architecture' }
+      { type: 'image', url: '/assets/images/projects/proj_gansdoctor/preview_app.webp', caption: 'GansDoctor UI' },
+      { type: 'image', url: '/assets/images/projects/proj_gansdoctor/gcp_architecture.webp', caption: 'GCP Architecture' },
+      { type: 'image', url: '/assets/images/projects/proj_gansdoctor/testing_gansdoctor.webp', caption: 'Testing System' },
+      { type: 'image', url: '/assets/images/projects/proj_gansdoctor/academy.webp', caption: 'Undergraduate Thesis' }
     ],
-    githubLink: 'https://github.com/mitahudev03/gansdoctor',
-    demoLink: 'https://play.google.com/store/apps/details?id=com.gansdoctor.app', // Playstore link
+    githubLink: 'https://github.com/rsydfhmy03/App-GANSDOCTOR.git',
+    githubLink2: 'https://github.com/rsydfhmy03/RestAPI-AI-Face-Detector.git',
+    demoLink: 'https://play.google.com/store/apps/details?id=com.mitahudev.gansdoctor&pcampaignid=web_share', // Playstore link
   },
   {
     id: 'proj_mmct',
     title: 'Malang Mbois City Tour (MMCT)',
-    categories: ['Web', 'Frontend'],
+    categories: ['Web', 'Frontend' , 'Backend'],
     association: 'Profile Image Studio',
     date: 'Nov 2024 - Jan 2025',
     shortDesc: 'Feature Development & UX Enhancement for City Tourism Platform.',
@@ -39,10 +41,10 @@ Key Contributions:
 • New Pricing Model: Implemented "per package" pricing logic (fixed price for groups) alongside "per person".
 • Dynamic Landing Page: Real-time updates of tour facilities and routes based on user selection.
 • Payment Integration: Integrated Midtrans gateway and implemented WebSockets for real-time success notifications, replacing manual chat-based bookings.`,
-    techStack: ['AngularJS', 'Midtrans API', 'WebSockets', 'TypeScript', 'Node.js'],
+    techStack: ['AngularJS', 'AdonisJS','Midtrans API', 'WebSockets', 'TypeScript', 'Node.js'],
     media: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?q=80&w=1000&auto=format&fit=crop', caption: 'MMCT Landing Page' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000&auto=format&fit=crop', caption: 'Admin Dashboard' }
+      { type: 'image', url: '/assets/images/projects/proj_mmct/landing_mmct.webp', caption: 'MMCT Landing Page' },
+      { type: 'image', url: '/assets/images/projects/proj_mmct/intership_pis.webp', caption: 'Internship at PIS' }
     ],
     isConfidential: true,
     demoLink: 'https://mmct.mcf.or.id/', 
@@ -100,7 +102,7 @@ Technical Details:
     media: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000&auto=format&fit=crop', caption: 'Mobile UI' }
     ],
-    demoLink: 'https://play.google.com/store/apps/details?id=com.smektuber',
+    demoLink: 'https://play.google.com/store/apps/details?id=com.nekoid.smektuber&pcampaignid=web_share',
   },
   {
     id: 'proj_epasys',
