@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Folder, FileCode, ChevronRight, ArrowLeft, ExternalLink, Github, Eye, Lock, Layers, Cpu, Cloud, Smartphone, Database, Building2, Calendar, PlayCircle, Brain, Radio } from 'lucide-react';
+import { Folder, FileCode, ChevronRight, ArrowLeft, ExternalLink, Github, Eye, Lock, Layers, Cpu, Cloud, Smartphone, Database, Building2, Calendar, PlayCircle, Brain, Radio, ChevronLeft, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PROJECTS_DATA } from '../../../data/projects';
 import { Project, ProjectCategory } from '../../../types/content.types';
@@ -11,7 +11,7 @@ const CATEGORIES: { id: ProjectCategory; name: string; icon: any }[] = [
   { id: 'Mobile', name: 'Mobile', icon: Smartphone },
   { id: 'AI/ML', name: 'AI / Deep Learning', icon: Brain },
   { id: 'Cloud', name: 'Cloud Computing', icon: Cloud },
-  { id: 'IoT', name: 'Internet of Things', icon: Radio }, // Using Radio as generic for IoT
+  { id: 'IoT', name: 'Internet of Things', icon: Radio },
 ];
 
 const Projects: React.FC = () => {
@@ -29,10 +29,21 @@ const Projects: React.FC = () => {
     setCurrentMediaIndex(0);
   };
 
-  // Gallery Navigation
+  const handleCloseProject = () => {
+    setSelectedProject(null);
+    setCurrentMediaIndex(0);
+  };
+
+  // Carousel Navigation
   const nextMedia = () => {
     if (selectedProject) {
-        setCurrentMediaIndex((prev) => (prev + 1) % selectedProject.media.length);
+      setCurrentMediaIndex((prev) => (prev + 1) % selectedProject.media.length);
+    }
+  };
+
+  const prevMedia = () => {
+    if (selectedProject) {
+      setCurrentMediaIndex((prev) => (prev - 1 + selectedProject.media.length) % selectedProject.media.length);
     }
   };
 
@@ -45,171 +56,272 @@ const Projects: React.FC = () => {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -20 }}
-        className="h-full flex flex-col bg-[#0a0a0a] font-mono"
+        className="h-full flex flex-col bg-[#0a0a0a]"
       >
         {/* Detail Header */}
-        <div className="h-12 border-b border-white/10 flex items-center px-4 gap-4 bg-white/5 shrink-0">
+        <div className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-gradient-to-b from-cursed-cyan/5 to-transparent shrink-0">
           <button 
-            onClick={() => setSelectedProject(null)}
-            className="flex items-center gap-2 text-xs text-cursed-cyan hover:text-white transition-colors uppercase tracking-wider"
+            onClick={handleCloseProject}
+            className="flex items-center gap-2 px-3 py-2 text-xs text-cursed-cyan hover:text-white hover:bg-white/5 transition-all rounded border border-transparent hover:border-white/10"
           >
             <ArrowLeft size={14} />
-            Back to Archives
+            <span className="font-mono tracking-wider">BACK TO ARCHIVES</span>
           </button>
-          <div className="h-4 w-[1px] bg-white/10" />
-          <span className="text-gray-400 text-xs truncate hidden md:block">
-            archives / {selectedProject.categories[0]} / {selectedProject.title.toLowerCase().replace(/ /g, '_')}
-          </span>
+          
+          <div className="hidden md:flex items-center gap-2 text-xs text-gray-500 font-mono">
+            <span className="text-gray-600">~/archives/</span>
+            <ChevronRight size={12} />
+            <span className="text-gray-500">{selectedProject.categories[0]}</span>
+            <ChevronRight size={12} />
+            <span className="text-cursed-cyan">{selectedProject.title.toLowerCase().replace(/ /g, '_')}</span>
+          </div>
+
+          <button 
+            onClick={handleCloseProject}
+            className="p-2 hover:bg-white/5 rounded transition-colors"
+          >
+            <X size={16} className="text-gray-500 hover:text-white" />
+          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-            
-          {/* Media Gallery Stage */}
-          <div className="relative w-full aspect-video md:h-[400px] bg-black border-b border-white/10 group">
-             {isVideo ? (
-                 <iframe 
+          {/* Enhanced Media Carousel */}
+          <div className="relative w-full bg-black border-b border-white/10">
+            <div className="relative aspect-video max-h-[600px] bg-gradient-to-br from-black via-[#0a0a0a] to-black">
+              {/* Main Media Display */}
+              <div className="absolute inset-0 flex items-center justify-center p-4">
+                {isVideo ? (
+                  <iframe 
                     src={currentMedia.url} 
                     title="Project Video"
-                    className="w-full h-full"
+                    className="w-full h-full rounded-lg"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowFullScreen
-                 />
-             ) : (
-                <img 
+                  />
+                ) : (
+                  <img 
                     src={currentMedia.url || "https://placehold.co/800x400/121212/00f0ff?text=NO+SIGNAL"} 
                     alt={selectedProject.title}
-                    className="w-full h-full object-contain"
-                />
-             )}
-             
-             {/* Gallery Controls (if multiple) */}
-             {selectedProject.media.length > 1 && (
-                 <>
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                        {selectedProject.media.map((_, idx) => (
-                            <button 
-                                key={idx}
-                                onClick={() => setCurrentMediaIndex(idx)}
-                                className={`w-2 h-2 rounded-full transition-all ${idx === currentMediaIndex ? 'bg-cursed-cyan w-4' : 'bg-white/50 hover:bg-white'}`}
-                            />
-                        ))}
-                    </div>
-                    {/* Caption Overlay */}
-                    {currentMedia.caption && (
-                        <div className="absolute top-4 right-4 bg-black/70 px-3 py-1 rounded text-xs text-white border border-white/10 backdrop-blur-sm">
-                            {currentMedia.caption}
+                    className="max-w-full max-h-full object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                  />
+                )}
+              </div>
+
+              {/* Navigation Arrows */}
+              {selectedProject.media.length > 1 && (
+                <>
+                  <button
+                    onClick={prevMedia}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/80 hover:bg-cursed-cyan/20 border border-white/10 hover:border-cursed-cyan/40 rounded-lg backdrop-blur-sm transition-all group z-10"
+                  >
+                    <ChevronLeft size={20} className="text-white group-hover:text-cursed-cyan" />
+                  </button>
+                  <button
+                    onClick={nextMedia}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/80 hover:bg-cursed-cyan/20 border border-white/10 hover:border-cursed-cyan/40 rounded-lg backdrop-blur-sm transition-all group z-10"
+                  >
+                    <ChevronRight size={20} className="text-white group-hover:text-cursed-cyan" />
+                  </button>
+                </>
+              )}
+
+              {/* Media Counter */}
+              {selectedProject.media.length > 1 && (
+                <div className="absolute top-4 left-4 px-3 py-1.5 bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg text-xs text-white font-mono z-10">
+                  {currentMediaIndex + 1} / {selectedProject.media.length}
+                </div>
+              )}
+
+              {/* Caption */}
+              {currentMedia.caption && (
+                <div className="absolute top-4 right-4 max-w-xs px-3 py-1.5 bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg text-xs text-white z-10">
+                  {currentMedia.caption}
+                </div>
+              )}
+
+              {/* Dot Indicators */}
+              {selectedProject.media.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {selectedProject.media.map((_, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setCurrentMediaIndex(idx)}
+                      className={`transition-all rounded-full ${
+                        idx === currentMediaIndex 
+                          ? 'bg-cursed-cyan w-6 h-2' 
+                          : 'bg-white/30 hover:bg-white/60 w-2 h-2'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Thumbnail Strip */}
+            {selectedProject.media.length > 1 && (
+              <div className="bg-[#0a0a0a] border-t border-white/10 p-4">
+                <div className="flex gap-3 overflow-x-auto no-scrollbar max-w-5xl mx-auto">
+                  {selectedProject.media.map((m, idx) => (
+                    <button 
+                      key={idx} 
+                      onClick={() => setCurrentMediaIndex(idx)}
+                      className={`
+                        relative shrink-0 w-32 aspect-video rounded-lg overflow-hidden border-2 transition-all
+                        ${currentMediaIndex === idx 
+                          ? 'border-cursed-cyan scale-105 opacity-100' 
+                          : 'border-white/10 hover:border-white/30 opacity-50 hover:opacity-80'
+                        }
+                      `}
+                    >
+                      {m.type === 'video' ? (
+                        <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+                          <PlayCircle size={24} className="text-white" />
                         </div>
-                    )}
-                 </>
-             )}
+                      ) : (
+                        <img src={m.url} className="w-full h-full object-cover" alt={`Thumbnail ${idx + 1}`} />
+                      )}
+                      {currentMediaIndex === idx && (
+                        <div className="absolute inset-0 bg-cursed-cyan/10" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-8">
-            
-            {/* Title & Metadata */}
-            <div>
-                <div className="flex flex-wrap gap-2 mb-3">
+          {/* Content Section */}
+          <div className="p-6 md:p-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Title & Metadata */}
+                <div>
+                  <div className="flex flex-wrap gap-2 mb-3">
                     {selectedProject.categories.map(cat => (
-                         <span key={cat} className="px-2 py-0.5 rounded-full border border-white/20 bg-white/5 text-[10px] text-gray-300 uppercase tracking-wider">
-                            {cat}
-                         </span>
+                      <span key={cat} className="px-3 py-1 rounded-full bg-cursed-cyan/10 border border-cursed-cyan/30 text-[10px] text-cursed-cyan uppercase tracking-wider font-mono">
+                        {cat}
+                      </span>
                     ))}
-                </div>
-                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">
+                  </div>
+                  
+                  <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
                     {selectedProject.title}
-                </h1>
-                
-                {selectedProject.association && (
-                    <div className="flex items-center gap-2 text-cursed-cyan text-xs md:text-sm font-bold mb-1">
-                        <Building2 size={14} />
-                        <span>{selectedProject.association}</span>
-                    </div>
-                )}
-                <div className="flex items-center gap-2 text-gray-500 text-xs">
-                    <Calendar size={12} />
-                    <span>{selectedProject.date}</span>
-                </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4 border-y border-white/10 py-6">
-               {selectedProject.demoLink && (
-                 <a href={selectedProject.demoLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-2 bg-cursed-cyan text-black font-bold text-xs rounded hover:bg-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)]">
-                   <ExternalLink size={14} /> 
-                   {selectedProject.demoLink.includes('play.google') ? 'PLAY STORE' : 'LIVE DEMO'}
-                 </a>
-               )}
-               {selectedProject.githubLink && (
-                 <a href={selectedProject.githubLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-2 bg-white/10 text-white font-bold text-xs rounded hover:bg-white/20 hover:border-white/50 transition-all border border-white/10">
-                   <Github size={14} /> SOURCE CODE
-                 </a>
-               )}
-               {selectedProject.githubLink2 && (
-                 <a href={selectedProject.githubLink2} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-2 bg-white/10 text-white font-bold text-xs rounded hover:bg-white/20 hover:border-white/50 transition-all border border-white/10">
-                   <Github size={14} /> SOURCE CODE 2
-                 </a>
-               )}
-               {selectedProject.isConfidential && (
-                 <div className="flex items-center gap-2 px-6 py-2 bg-cursed-red/10 text-cursed-red font-bold text-xs rounded border border-cursed-red/30 cursor-not-allowed opacity-80">
-                   <Lock size={14} /> PRIVATE / CONFIDENTIAL
-                 </div>
-               )}
-            </div>
-
-            {/* Description & Stack */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="md:col-span-2 prose prose-invert prose-sm max-w-none">
-                    <h3 className="text-cursed-cyan uppercase tracking-widest text-xs mb-4 font-bold">
-                        Mission Report
-                    </h3>
-                    <p className="text-gray-300 leading-relaxed text-sm whitespace-pre-line">
-                        {selectedProject.fullDesc}
-                    </p>
-                </div>
-                
-                <div className="space-y-6">
-                    <div>
-                        <h3 className="text-gray-500 uppercase tracking-widest text-xs mb-3 font-bold border-b border-white/10 pb-2">
-                            Tech Stack
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                            {selectedProject.techStack.map(tech => (
-                            <span key={tech} className="text-[11px] px-2 py-1 bg-[#0f0f0f] border border-white/10 text-gray-300 rounded hover:text-cursed-cyan hover:border-cursed-cyan/30 transition-colors">
-                                {tech}
-                            </span>
-                            ))}
+                  </h1>
+                  
+                  <div className="flex flex-wrap gap-4 text-sm">
+                    {selectedProject.association && (
+                      <div className="flex items-center gap-2 text-gray-400">
+                        <div className="p-1.5 bg-white/5 rounded border border-white/10">
+                          <Building2 size={14} />
                         </div>
-                    </div>
-                    
-                    {/* Thumbnail Strip (Navigation) */}
-                    {selectedProject.media.length > 1 && (
-                        <div>
-                             <h3 className="text-gray-500 uppercase tracking-widest text-xs mb-3 font-bold border-b border-white/10 pb-2">
-                                Gallery
-                            </h3>
-                            <div className="grid grid-cols-3 gap-2">
-                                {selectedProject.media.map((m, idx) => (
-                                    <div 
-                                        key={idx} 
-                                        onClick={() => setCurrentMediaIndex(idx)}
-                                        className={`
-                                            aspect-video rounded overflow-hidden cursor-pointer border
-                                            ${currentMediaIndex === idx ? 'border-cursed-cyan opacity-100' : 'border-transparent opacity-50 hover:opacity-100'}
-                                        `}
-                                    >
-                                        {m.type === 'video' ? (
-                                            <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-                                                <PlayCircle size={20} className="text-white" />
-                                            </div>
-                                        ) : (
-                                            <img src={m.url} className="w-full h-full object-cover" alt="thumb" />
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <span className="font-medium">{selectedProject.association}</span>
+                      </div>
                     )}
+                    <div className="flex items-center gap-2 text-gray-400">
+                      <div className="p-1.5 bg-white/5 rounded border border-white/10">
+                        <Calendar size={14} />
+                      </div>
+                      <span className="font-mono text-xs">{selectedProject.date}</span>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-3 pb-6 border-b border-white/10">
+                  {selectedProject.demoLink && (
+                    <a 
+                      href={selectedProject.demoLink} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex items-center gap-2 px-6 py-3 bg-cursed-cyan hover:bg-white text-black font-bold text-sm rounded-lg hover:scale-105 transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)]"
+                    >
+                      <ExternalLink size={16} /> 
+                      {selectedProject.demoLink.includes('play.google') ? 'VIEW ON PLAY STORE' : 'LIVE DEMO'}
+                    </a>
+                  )}
+                  {selectedProject.githubLink && (
+                    <a 
+                      href={selectedProject.githubLink} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold text-sm rounded-lg transition-all border border-white/10 hover:border-white/30"
+                    >
+                      <Github size={16} /> SOURCE CODE
+                    </a>
+                  )}
+                  {selectedProject.githubLink2 && (
+                    <a 
+                      href={selectedProject.githubLink2} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold text-sm rounded-lg transition-all border border-white/10 hover:border-white/30"
+                    >
+                      <Github size={16} /> SOURCE CODE 2
+                    </a>
+                  )}
+                  {selectedProject.isConfidential && (
+                    <div className="flex items-center gap-2 px-6 py-3 bg-cursed-red/10 text-cursed-red font-bold text-sm rounded-lg border border-cursed-red/30 cursor-not-allowed">
+                      <Lock size={16} /> PRIVATE / CONFIDENTIAL
+                    </div>
+                  )}
+                </div>
+
+                {/* Description */}
+                <div>
+                  <h3 className="text-cursed-cyan uppercase tracking-widest text-xs mb-4 font-bold flex items-center gap-2">
+                    <div className="w-1 h-4 bg-cursed-cyan rounded" />
+                    MISSION REPORT
+                  </h3>
+                  <div className="prose prose-invert prose-sm max-w-none">
+                    <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                      {selectedProject.fullDesc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar */}
+              <div className="space-y-6">
+                {/* Tech Stack */}
+                <div className="p-5 bg-[#0f0f0f] border border-white/10 rounded-xl">
+                  <h3 className="text-gray-400 uppercase tracking-widest text-xs mb-4 font-bold flex items-center gap-2">
+                    <Cpu size={14} className="text-cursed-cyan" />
+                    TECH STACK
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.techStack.map(tech => (
+                      <span 
+                        key={tech} 
+                        className="text-xs px-3 py-1.5 bg-black/50 border border-white/10 text-gray-300 rounded-lg hover:text-cursed-cyan hover:border-cursed-cyan/30 transition-all font-mono"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Project Stats */}
+                <div className="p-5 bg-gradient-to-br from-cursed-cyan/5 to-transparent border border-cursed-cyan/20 rounded-xl">
+                  <h3 className="text-cursed-cyan uppercase tracking-widest text-xs mb-4 font-bold">
+                    PROJECT INFO
+                  </h3>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Status:</span>
+                      <span className="text-white font-mono">{selectedProject.isConfidential ? 'Private' : 'Public'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Category:</span>
+                      <span className="text-white font-mono">{selectedProject.categories[0]}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Media:</span>
+                      <span className="text-white font-mono">{selectedProject.media.length} items</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -220,71 +332,124 @@ const Projects: React.FC = () => {
   return (
     <div className="h-full flex flex-col md:flex-row bg-[#0a0a0a]">
       {/* Sidebar / Filters */}
-      <div className="w-full md:w-56 bg-black/20 border-b md:border-b-0 md:border-r border-white/10 flex flex-row md:flex-col p-2 gap-1 overflow-x-auto no-scrollbar shrink-0">
-        <div className="hidden md:block text-xs text-gray-500 font-mono px-2 py-2 mb-2 tracking-widest">DOMAINS</div>
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
-            className={`
-              flex-1 md:flex-none flex items-center justify-center md:justify-start gap-3 px-3 py-2 rounded text-xs md:text-sm transition-colors whitespace-nowrap font-mono
-              ${activeCategory === cat.id ? 'bg-white/10 text-white border border-white/10' : 'text-gray-500 hover:bg-white/5 hover:text-gray-300 border border-transparent'}
-            `}
-          >
-            <cat.icon size={14} className={activeCategory === cat.id ? 'text-cursed-cyan' : ''} />
-            <span>{cat.name}</span>
-          </button>
-        ))}
+      <div className="w-full md:w-64 bg-gradient-to-b from-black/40 to-transparent border-b md:border-b-0 md:border-r border-white/10 flex flex-row md:flex-col p-3 gap-2 overflow-x-auto no-scrollbar shrink-0">
+        <div className="hidden md:flex items-center gap-2 px-3 py-3 mb-2 border-b border-white/10">
+          <Folder size={16} className="text-cursed-cyan" />
+          <span className="text-xs text-gray-400 font-mono tracking-widest uppercase">Domains</span>
+        </div>
+        {CATEGORIES.map((cat) => {
+          const count = cat.id === 'All' ? PROJECTS_DATA.length : PROJECTS_DATA.filter(p => p.categories.includes(cat.id)).length;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`
+                group relative flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all whitespace-nowrap font-mono
+                ${activeCategory === cat.id 
+                  ? 'bg-gradient-to-r from-cursed-cyan/10 to-transparent text-white border border-cursed-cyan/30' 
+                  : 'text-gray-500 hover:bg-white/5 hover:text-gray-300 border border-transparent hover:border-white/10'
+                }
+              `}
+            >
+              {activeCategory === cat.id && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-cursed-cyan rounded-r" />
+              )}
+              <cat.icon size={16} className={activeCategory === cat.id ? 'text-cursed-cyan' : 'text-gray-600'} />
+              <span className="flex-1 text-left">{cat.name}</span>
+              <span className={`text-xs font-mono ${activeCategory === cat.id ? 'text-cursed-cyan' : 'text-gray-600'}`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="flex-1 flex flex-col min-h-0">
         {/* Breadcrumb */}
-        <div className="h-10 shrink-0 border-b border-white/10 flex items-center px-4 gap-2 text-sm text-gray-500 bg-black/40 font-mono">
-          <span>root</span>
-          <ChevronRight size={14} />
-          <span>archives</span>
-          <ChevronRight size={14} />
-          <span className="text-cursed-cyan">{activeCategory}</span>
+        <div className="h-12 shrink-0 border-b border-white/10 flex items-center justify-between px-4 bg-gradient-to-b from-cursed-cyan/5 to-transparent">
+          <div className="flex items-center gap-2 text-sm text-gray-500 font-mono">
+            <span className="text-gray-600">~</span>
+            <ChevronRight size={14} />
+            <span>archives</span>
+            <ChevronRight size={14} />
+            <span className="text-cursed-cyan">{activeCategory}</span>
+          </div>
+          <div className="text-xs text-gray-600 font-mono">
+            {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''}
+          </div>
         </div>
 
         {/* Project Grid */}
-        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4 overflow-y-auto custom-scrollbar content-start">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div 
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                key={project.id}
-                onClick={() => handleSelectProject(project)}
-                className="group relative p-4 rounded-lg border border-white/5 hover:border-cursed-cyan/50 hover:bg-white/[0.03] flex flex-col gap-3 cursor-pointer transition-all bg-[#0f0f0f]"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded flex items-center justify-center border border-white/5 group-hover:border-cursed-cyan/30 shadow-inner">
-                    <FileCode size={20} className="text-gray-500 group-hover:text-cursed-cyan transition-colors" />
-                  </div>
-                  {project.isConfidential && <Lock size={12} className="text-cursed-red" />}
-                </div>
-                
-                <div>
-                  <h4 className="text-sm font-bold text-gray-200 group-hover:text-white truncate font-mono">{project.title}</h4>
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                      {project.categories.slice(0, 3).map(cat => (
-                          <span key={cat} className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-gray-400">{cat}</span>
-                      ))}
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2 line-clamp-2">{project.shortDesc}</p>
-                </div>
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto custom-scrollbar">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 max-w-[1800px] mx-auto">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project, index) => (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ delay: index * 0.03 }}
+                  key={project.id}
+                  onClick={() => handleSelectProject(project)}
+                  className="group relative bg-gradient-to-br from-[#0f0f0f] to-[#0a0a0a] rounded-xl border border-white/5 hover:border-cursed-cyan/40 overflow-hidden cursor-pointer transition-all hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:-translate-y-1"
+                >
+                  {/* Hover Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cursed-cyan/0 via-cursed-cyan/5 to-cursed-cyan/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="relative p-5 flex flex-col gap-4">
+                    {/* Header */}
+                    <div className="flex items-start justify-between">
+                      <div className="p-3 bg-gradient-to-br from-gray-800 to-black rounded-lg border border-white/10 group-hover:border-cursed-cyan/30 shadow-inner transition-colors">
+                        <FileCode size={22} className="text-gray-500 group-hover:text-cursed-cyan transition-colors" />
+                      </div>
+                      {project.isConfidential && (
+                        <div className="p-2 bg-cursed-red/10 border border-cursed-red/30 rounded-lg">
+                          <Lock size={14} className="text-cursed-red" />
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1">
+                      <h4 className="text-base font-bold text-gray-200 group-hover:text-white mb-2 font-mono line-clamp-1">
+                        {project.title}
+                      </h4>
+                      
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {project.categories.slice(0, 2).map(cat => (
+                          <span 
+                            key={cat} 
+                            className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-400 font-mono"
+                          >
+                            {cat}
+                          </span>
+                        ))}
+                        {project.categories.length > 2 && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-500 font-mono">
+                            +{project.categories.length - 2}
+                          </span>
+                        )}
+                      </div>
+                      
+                      <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+                        {project.shortDesc}
+                      </p>
+                    </div>
 
-                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="flex items-center gap-1 text-[10px] text-cursed-cyan bg-cursed-cyan/10 px-2 py-1 rounded border border-cursed-cyan/20">
-                    <Eye size={10} /> INSPECT
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                      <span className="text-[10px] text-gray-600 font-mono">{project.date}</span>
+                      <div className="flex items-center gap-1 text-[10px] text-cursed-cyan bg-cursed-cyan/10 px-2 py-1 rounded border border-cursed-cyan/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Eye size={10} /> 
+                        <span className="font-mono">INSPECT</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>
